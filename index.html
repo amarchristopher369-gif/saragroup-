@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Tools — Save Time, Work Smart</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --card: #111118;
+    --border: #1e1e2e;
+    --accent: #6ee7b7;
+    --accent2: #818cf8;
+    --accent3: #f472b6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --highlight: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 60px 0 40px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(110,231,183,0.08);
+    border: 1px solid rgba(110,231,183,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span.g1 { color: var(--accent); }
+  .hero h1 span.g2 { color: var(--accent2); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .meta-pill .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 28px;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* AGENDA */
+  .agenda { display: grid; gap: 10px; margin-bottom: 48px; }
+
+  .agenda-item {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 16px;
+    align-items: start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    transition: border-color 0.2s;
+  }
+  .agenda-item:hover { border-color: rgba(110,231,183,0.25); }
+
+  .agenda-time {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding-top: 3px;
+  }
+
+  .agenda-text strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .agenda-text p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* SECTION HEADING */
+  .section-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .accent-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* TOOL CARDS */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+    gap: 14px;
+    margin-bottom: 44px;
+  }
+
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .tool-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+  }
+  .tool-card.green:hover { border-color: var(--accent); }
+  .tool-card.purple:hover { border-color: var(--accent2); }
+  .tool-card.pink:hover { border-color: var(--accent3); }
+  .tool-card.yellow:hover { border-color: var(--highlight); }
+
+  .tool-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .tool-icon.green { background: rgba(110,231,183,0.1); }
+  .tool-icon.purple { background: rgba(129,140,248,0.1); }
+  .tool-icon.pink { background: rgba(244,114,182,0.1); }
+  .tool-icon.yellow { background: rgba(251,191,36,0.1); }
+
+  .tool-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .tool-category {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .tool-category.green { color: var(--accent); }
+  .tool-category.purple { color: var(--accent2); }
+  .tool-category.pink { color: var(--accent3); }
+  .tool-category.yellow { color: var(--highlight); }
+
+  .tool-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .tool-what-to-say {
+    font-size: 0.78rem;
+    color: var(--text);
+    background: rgba(255,255,255,0.03);
+    border-left: 2px solid;
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+    line-height: 1.5;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+  .tool-what-to-say.green { border-color: var(--accent); }
+  .tool-what-to-say.purple { border-color: var(--accent2); }
+  .tool-what-to-say.pink { border-color: var(--accent3); }
+  .tool-what-to-say.yellow { border-color: var(--highlight); }
+
+  .tool-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .tool-save.green { background: rgba(110,231,183,0.08); color: var(--accent); }
+  .tool-save.purple { background: rgba(129,140,248,0.08); color: var(--accent2); }
+  .tool-save.pink { background: rgba(244,114,182,0.08); color: var(--accent3); }
+  .tool-save.yellow { background: rgba(251,191,36,0.08); color: var(--highlight); }
+
+  /* QUOTE */
+  .quote-box {
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    background: rgba(110,231,183,0.04);
+    border-radius: 0 10px 10px 0;
+    margin: 32px 0;
+  }
+  .quote-box p {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.5;
+  }
+  .quote-box span {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    display: block;
+    margin-top: 6px;
+  }
+
+  /* TIPS */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 12px;
+    margin-bottom: 44px;
+  }
+
+  .tip-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .tip-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: rgba(110,231,183,0.12);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .tip-text { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+  .tip-text strong { color: var(--text); display: block; margin-bottom: 3px; font-size: 0.87rem; }
+
+  /* CLOSING */
+  .closing-card {
+    background: linear-gradient(135deg, rgba(110,231,183,0.07), rgba(129,140,248,0.07));
+    border: 1px solid rgba(110,231,183,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+  }
+  .closing-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .closing-card .closing-quote {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.6;
+    margin: 16px 0;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .closing-card p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 600px) {
+    .tools-grid { grid-template-columns: 1fr; }
+    .tips-grid { grid-template-columns: 1fr 1fr; }
+    .agenda-item { grid-template-columns: 55px 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span class="dot"></span> Speaker Guide · Technology Event</div>
+    <h1>
+      <span class="g1">AI Tools</span> That<br>
+      <span class="g2">Save Your Time</span>
+    </h1>
+    <p class="hero-sub">A complete 20-minute talk guide for computer institute students — covering the most useful AI tools that professionals use every day to work faster and smarter.</p>
+    <div class="hero-meta">
+      <div class="meta-pill"><span class="dot"></span> 20 Minutes</div>
+      <div class="meta-pill">👨‍🎓 Computer Students</div>
+      <div class="meta-pill">🎤 Full Speaker Script</div>
+    </div>
+  </div>
+
+  <!-- AGENDA -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-label">Talk Structure — 20 Minutes</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="agenda">
+    <div class="agenda-item">
+      <div class="agenda-time">0 – 2 min</div>
+      <div class="agenda-text">
+        <strong>Opening Hook — The Big Problem</strong>
+        <p>Start by asking the audience: "How much time do you waste every day doing tasks a computer could do for you?" Let them think. Then say: "What if I told you that the top professionals in the world are saving 3–4 hours every single day using tools that are completely free?" That gets their attention immediately.</p>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-time">2 – 5 min</div>
+      <div class="agenda-text">
+        <strong>What Is AI? — Keep It Simple</strong>
+        <p>Explain AI in one sentence: "AI is software that learns from millions of examples and uses that knowledge to help you do tasks automatically." Relate it to things they already use — Google's autocomplete, YouTube's recommendation system, even autocorrect on their phone. AI is not new. It's just becoming more powerful.</p>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-time">5 – 15 min</div>
+      <div class="agenda-text">
+        <strong>The AI Tools — Four Categories (Core Section)</strong>
+        <p>Cover four categories: Writing & Text, Image & Design, Coding, and Productivity & Study. Spend roughly 2–2.5 minutes per category. For each tool, give one real-life example of how a student or professional would use it. This is the heart of your talk — make it practical, not theoretical.</p>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-time">15 – 18 min</div>
+      <div class="agenda-text">
+        <strong>Real-World Time Savings</strong>
+        <p>Make the savings concrete: "Writing a 500-word assignment used to take me 2 hours — with AI assistance, I can do a solid draft in 15 minutes and spend the rest of the time improving it." Or: "Designing a poster for an event used to require Photoshop skills. Now any student can do it in Canva AI in under 10 minutes." These specific numbers stick in people's minds.</p>
+      </div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-time">18 – 20 min</div>
+      <div class="agenda-text">
+        <strong>Call to Action + Q&A</strong>
+        <p>Give them one clear homework: "Tonight, open ChatGPT — it's free — and ask it one question you've been struggling to find an answer for. That's all. Just try it once." Then take 2 questions and close with your powerful final statement. Don't run over time — a clean ending is more memorable than a rushed one.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WRITING TOOLS -->
+  <div class="section-heading">
+    <span class="accent-dot" style="background:var(--accent)"></span>
+    Category 1 — Writing & Text AI Tools
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card green">
+      <div class="tool-icon green">🤖</div>
+      <div class="tool-name">ChatGPT</div>
+      <div class="tool-category green">Writing · Answers · Brainstorming</div>
+      <div class="tool-desc">The world's most popular AI tool. You can ask it to write emails, summarize long articles, explain any concept, generate ideas, and even write and debug code — all in plain conversational English.</div>
+      <div class="tool-what-to-say green">"Imagine having a brilliant assistant available 24/7 who never gets tired and can answer almost any question in seconds. That's ChatGPT."</div>
+      <div class="tool-save green">⏱ Saves 2–3 hours per day</div>
+    </div>
+    <div class="tool-card green">
+      <div class="tool-icon green">✨</div>
+      <div class="tool-name">Claude (by Anthropic)</div>
+      <div class="tool-category green">Documents · Analysis · Long Text</div>
+      <div class="tool-desc">Excellent for reading and analyzing long documents, writing detailed reports, and giving thoughtful explanations. It understands context very well and is trusted by researchers and professionals worldwide.</div>
+      <div class="tool-what-to-say green">"If ChatGPT is like a fast assistant, Claude is like a careful, detailed expert who reads everything before answering."</div>
+      <div class="tool-save green">⏱ Saves 1–2 hours per day</div>
+    </div>
+    <div class="tool-card green">
+      <div class="tool-icon green">📝</div>
+      <div class="tool-name">Grammarly AI</div>
+      <div class="tool-category green">Grammar · Writing Quality</div>
+      <div class="tool-desc">Automatically corrects grammar, improves your writing style, suggests better word choices, and can even rewrite full paragraphs. It works directly inside Gmail, Word, and Chrome — no copy-pasting needed.</div>
+      <div class="tool-what-to-say green">"Every email, assignment, or document you write instantly becomes more professional with Grammarly running in the background."</div>
+      <div class="tool-save green">⏱ Saves 30 minutes daily</div>
+    </div>
+  </div>
+
+  <!-- DESIGN TOOLS -->
+  <div class="section-heading">
+    <span class="accent-dot" style="background:var(--accent2)"></span>
+    Category 2 — Image & Design AI Tools
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card purple">
+      <div class="tool-icon purple">🎨</div>
+      <div class="tool-name">Canva AI</div>
+      <div class="tool-category purple">Design · Posters · Presentations</div>
+      <div class="tool-desc">Design beautiful posters, logos, social media graphics, and presentations in minutes. You just describe what you want — the AI builds a professional design for you. No design skills required at all.</div>
+      <div class="tool-what-to-say purple">"A professional graphic designer charges ₹2,000–₹5,000 for a poster. With Canva AI, a student can make the same poster in 10 minutes for free."</div>
+      <div class="tool-save purple">⏱ Saves 4–5 hours per project</div>
+    </div>
+    <div class="tool-card purple">
+      <div class="tool-icon purple">🖼️</div>
+      <div class="tool-name">Adobe Firefly</div>
+      <div class="tool-category purple">Image Generation · Photo Editing</div>
+      <div class="tool-desc">Generate entirely new images just from a text description. You can also remove unwanted objects from photos, change backgrounds, add elements, and modify image styles — all with simple text prompts.</div>
+      <div class="tool-what-to-say purple">"You type: 'a futuristic library with robots reading books' — and in 10 seconds, Firefly creates that image from scratch."</div>
+      <div class="tool-save purple">⏱ Saves 2 hours per design</div>
+    </div>
+    <div class="tool-card purple">
+      <div class="tool-icon purple">🌄</div>
+      <div class="tool-name">Remove.bg</div>
+      <div class="tool-category purple">Background Removal · Photos</div>
+      <div class="tool-desc">Removes the background from any photo in under 5 seconds. What used to require advanced Photoshop skills now takes a single click. It's completely free for standard use and works on any device.</div>
+      <div class="tool-what-to-say purple">"This one tool alone has saved millions of people hours of editing. Upload a photo, background is gone in 5 seconds. That's the power of AI."</div>
+      <div class="tool-save purple">⏱ Saves 15–20 min per photo</div>
+    </div>
+  </div>
+
+  <!-- CODING TOOLS -->
+  <div class="section-heading">
+    <span class="accent-dot" style="background:var(--accent3)"></span>
+    Category 3 — Coding & Developer AI Tools
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card pink">
+      <div class="tool-icon pink">💻</div>
+      <div class="tool-name">GitHub Copilot</div>
+      <div class="tool-category pink">Code Auto-Complete · Bug Fixing</div>
+      <div class="tool-desc">Works inside your code editor and writes code alongside you in real time. It can suggest entire functions, complete loops, fix bugs, and even explain what existing code does — like having a senior developer by your side.</div>
+      <div class="tool-what-to-say pink">"Studies show GitHub Copilot makes developers 55% faster. That means what used to take a full day now takes half a day."</div>
+      <div class="tool-save pink">⏱ Cuts coding time by 55%</div>
+    </div>
+    <div class="tool-card pink">
+      <div class="tool-icon pink">🔧</div>
+      <div class="tool-name">Blackbox AI</div>
+      <div class="tool-category pink">Code Search · Generation · Debug</div>
+      <div class="tool-desc">Search for code snippets, generate working solutions from plain English descriptions, and debug error messages instantly. Very popular among Indian developers and students because it's free and works across all programming languages.</div>
+      <div class="tool-what-to-say pink">"You describe the problem in English: 'I need a login form with email validation' — Blackbox writes the full working code in seconds."</div>
+      <div class="tool-save pink">⏱ Saves 1–2 hours daily</div>
+    </div>
+    <div class="tool-card pink">
+      <div class="tool-icon pink">🤝</div>
+      <div class="tool-name">Replit AI</div>
+      <div class="tool-category pink">Build · Deploy · No-Code Start</div>
+      <div class="tool-desc">Build entire web applications from a text description. Perfect for beginners — you describe what app you want to build, and Replit AI writes the code and even helps you deploy it. No prior coding experience needed to get started.</div>
+      <div class="tool-what-to-say pink">"Replit AI is the reason why people with zero coding experience are now building and launching real apps. The barrier has never been lower."</div>
+      <div class="tool-save pink">⏱ Saves days per project</div>
+    </div>
+  </div>
+
+  <!-- PRODUCTIVITY TOOLS -->
+  <div class="section-heading">
+    <span class="accent-dot" style="background:var(--highlight)"></span>
+    Category 4 — Productivity & Study AI Tools
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card yellow">
+      <div class="tool-icon yellow">📚</div>
+      <div class="tool-name">NotebookLM</div>
+      <div class="tool-category yellow">Study · Notes · Exam Prep</div>
+      <div class="tool-desc">Google's AI tool that lets you upload your textbooks, PDFs, and notes —
